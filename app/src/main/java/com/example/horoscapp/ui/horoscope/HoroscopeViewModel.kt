@@ -16,6 +16,11 @@ class HoroscopeViewModel @Inject constructor() : ViewModel() {
 
     init {
         _horoscope.value = listOf(
+            Aries, Taurus, Gemini,
+            Aries, Taurus, Gemini,
+            Aries, Taurus, Gemini,
+            Aries, Taurus, Gemini,
+            Aries, Taurus, Gemini,
             Aries, Taurus, Gemini
         )
     }
