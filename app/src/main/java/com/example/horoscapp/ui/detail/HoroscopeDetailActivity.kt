@@ -3,6 +3,7 @@ package com.example.horoscapp.ui.detail
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -23,6 +24,7 @@ class HoroscopeDetailActivity : AppCompatActivity() {
         binding = ActivityHoroscopeDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initUI()
+        horoscopeDetailViewModel.getHoroscope(args.type.name)
     }
 
     private fun initUI() {
@@ -34,24 +36,25 @@ class HoroscopeDetailActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 horoscopeDetailViewModel.state.collect {
                     when (it) {
-                        is HoroscopeDetailState.Erros -> loadingState()
+                        is HoroscopeDetailState.Error -> loadingState()
                         HoroscopeDetailState.Loading -> errorState()
-                        is HoroscopeDetailState.Success -> successState()
+                        is HoroscopeDetailState.Success -> successState(it)
                     }
                 }
             }
         }
     }
 
-    private fun successState() {
-
+    private fun loadingState() {
+        binding.pb.isVisible = true
     }
 
     private fun errorState() {
-
+        binding.pb.isVisible = false
     }
-
-    private fun loadingState() {
-
+    private fun successState(state: HoroscopeDetailState.Success) {
+        binding.pb.isVisible = false
+        binding.tvTitle.text = state.sign
+        binding.tvBoy.text = state.prediction
     }
 }
