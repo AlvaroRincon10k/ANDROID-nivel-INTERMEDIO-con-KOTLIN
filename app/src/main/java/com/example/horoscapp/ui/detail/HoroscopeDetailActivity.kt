@@ -28,7 +28,12 @@ class HoroscopeDetailActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
+        initListeners()
         initUIState()
+    }
+
+    private fun initListeners() {
+        binding.ivBack.setOnClickListener{ onBackPressed()}
     }
 
     private fun initUIState() {
