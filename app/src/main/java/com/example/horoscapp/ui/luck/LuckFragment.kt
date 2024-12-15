@@ -14,13 +14,18 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.horoscapp.R
 import com.example.horoscapp.databinding.FragmentLuckBinding
+import com.example.horoscapp.ui.providers.RandoCardProvider
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Random
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class LuckFragment : Fragment() {
     private var _binding: FragmentLuckBinding? = null
     private val binding get() = _binding!!
+
+    @Inject
+    lateinit var randomCardProvider: RandoCardProvider
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,7 +33,16 @@ class LuckFragment : Fragment() {
     }
 
     private fun initUI() {
+        preparedPrediction()
         initListeners()
+    }
+
+    private fun preparedPrediction() {
+        val luck = randomCardProvider.getLucky()
+        luck?.let {
+            binding.tvLucky.text = getString(it.text)
+            binding.ivLuckyCard.setImageResource(it.image)
+        }
     }
 
     private fun initListeners() {
